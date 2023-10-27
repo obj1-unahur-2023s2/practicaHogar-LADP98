@@ -1,0 +1,36 @@
+import casas_familias.*
+import habitaciones.*
+import personas.*
+
+describe "test modelo Hogar" {
+	const h1 = new Sencille(edad=20,tieneHabilidadesDeCocina=false)
+	const m = new Sencille(edad=45,tieneHabilidadesDeCocina=false)
+	const p = new Sencille(edad=46,tieneHabilidadesDeCocina=false)
+	const h2 = new Golose(edad=18,tieneHabilidadesDeCocina=false)
+	
+	const casa1 = new Casa(habitaciones=#{
+		new UsoGeneral() //hab0
+		,new Banio()	 //hab1
+		,new Dormitorio()//hab2
+		,new Dormitorio()//hab3
+		,new Cocina(metrosCuadrados=20)//hab4
+	})
+	const fami1 = new Familia(casaDondeVive=casa1)
+
+	method initialize() {
+		fami1.agregarIntegrantes(#{h1,m,p,h2})
+	}
+	
+	test "per1 no tiene habilidad de cocina" {
+		assert.notThat(m.tieneHabilidadesDeCocina())
+	}
+	
+	test "h1 está a gusto" {
+		assert.that(h1.seSienteAGusto(casa1, fami1))
+	}
+	
+	test "h2 no está a gusto" {
+		assert.notThat(h2.seSienteAGusto(casa1, fami1))
+	}
+
+}
